@@ -76,7 +76,6 @@ spark-submit streaming/spark_streaming.py
 * Containerize the system using Docker
 * Improve the ML model with more features and tuning
 
-
 ## Final thoughts
 
 This project helped me understand how different components in a real-time data system fit together — especially the interaction between streaming pipelines and ML models. It’s not meant to be perfect, but a solid foundation that can be extended into a production-grade system.
