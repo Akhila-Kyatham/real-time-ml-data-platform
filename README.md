@@ -26,23 +26,23 @@ This project brings together streaming, distributed processing, and basic ML to 
 
 ## Architecture Diagram
 
-The following diagram represents the end-to-end flow of the streaming pipeline, including ingestion, processing, machine learning, storage, and analytics layers.
+The following diagram represents the end-to-end flow of the streaming pipeline.
 
 ```mermaid
 flowchart LR
 
-A[Event Producer<br>Python Script] --> B[Kafka (Streaming)]
+A[Event Producer - Python Script] --> B[Kafka Streaming]
 B --> C[Spark Structured Streaming]
-C --> D[ML Anomaly Detection<br>Isolation Forest]
-D --> E[Data Storage<br>(Local / S3)]
+C --> D[ML Anomaly Detection - Isolation Forest]
+D --> E[Data Storage - S3]
 
-E --> F[Data Validation<br>(Great Expectations)]
+E --> F[Data Validation - Great Expectations]
 F --> E
 
-E --> G[Query Layer<br>(Athena / SQL)]
-G --> H[Dashboard<br>(Power BI / QuickSight)]
+E --> G[Query Layer - Athena SQL]
+G --> H[Dashboard - QuickSight]
 
-G --> I[Alerts / Logs]
+G --> I[Alerts - SNS]
 ```
 
 ## Tech Stack
