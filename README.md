@@ -2,100 +2,113 @@
 
 ## Overview
 
-This project is a real-time data pipeline built to simulate how modern systems process and analyze streaming data. The idea was to take a continuous flow of events (like transactions), process them in real time, and detect unusual patterns using machine learning.
+This project demonstrates a real-time data pipeline designed to simulate how modern systems process and analyze streaming data. It focuses on handling data as it arrives and applying machine learning to detect anomalies.
 
-Instead of just building a batch ETL pipeline, the focus here is on handling data as it arrives — similar to real production systems.
+To make the project easy to run locally, lightweight simulators are included alongside the architecture design.
 
+## Why this project
 
-## Why I built this
+In real-world systems, especially in finance and large-scale platforms, data is generated continuously. Detecting anomalies in real time is critical for identifying fraud, system failures, or unusual behavior.
 
-In many real-world systems, especially in finance and large-scale applications, data is generated continuously. Detecting issues or anomalies after hours or days isn’t effective — it needs to happen in real time.
-
-This project brings together streaming, distributed processing, and basic ML to address that need.
+This project brings together streaming concepts, distributed processing, and machine learning in a simplified and practical way.
 
 
 ## What the system does
 
-* Generates streaming data (simulating transactions)
-* Sends data through Kafka for real-time ingestion
-* Processes the stream using Spark Structured Streaming
-* Applies a machine learning model (Isolation Forest) to detect anomalies
-* Performs data validation checks
-* Stores processed data for downstream analysis
-
+* Simulates real-time streaming data
+* Processes streaming events (architecture design with Kafka + Spark)
+* Applies anomaly detection using machine learning
+* Validates data quality
+* Stores processed data for analysis
 
 ## Architecture Diagram
 
 The following diagram represents the end-to-end flow of the streaming pipeline.
 
-```mermaid
-flowchart LR
+<p align="center">
+  <img src="dashboards/architecture.png" width="800"/>
+</p>
 
-A[Event Producer - Python Script] --> B[Kafka Streaming]
-B --> C[Spark Structured Streaming]
-C --> D[ML Anomaly Detection - Isolation Forest]
-D --> E[Data Storage - S3]
+## Local Simulation (Runnable Without Kafka/AWS)
 
-E --> F[Data Validation - Great Expectations]
-F --> E
+To make this project easy to test locally, simulation scripts are included:
 
-E --> G[Query Layer - Athena SQL]
-G --> H[Dashboard - QuickSight]
+### Streaming Simulator
 
-G --> I[Alerts - SNS]
+```bash
+python streaming/stream_simulator.py
 ```
+
+Generates continuous event data in real time.
+
+### ML Simulator
+
+```bash
+python streaming/ml_simulator.py
+```
+
+Runs anomaly detection on sample data using Isolation Forest.
+
+## Sample Output
+
+### Streaming Simulation Output
+
+![Streaming Output](dashboards/stream_output.png)
+
+### ML Anomaly Detection Output
+
+![ML Output](dashboards/ml_output.png)
 
 ## Tech Stack
 
 * Python
-* Kafka
-* Spark (Structured Streaming)
-* Scikit-learn (for anomaly detection)
-* Airflow (for orchestration)
-* AWS concepts (S3 / Glue / Athena – design-ready)
+* Kafka (architecture design)
+* Spark (Structured Streaming - design)
+* Scikit-learn (Isolation Forest)
+* Airflow (orchestration design)
+* AWS concepts (S3, Glue, Athena, QuickSight)
 
 ## Project Structure
 
 ```
 real-time-ml-data-platform/
 │
-├── streaming/        # Kafka producer + Spark streaming job  
-├── ml/               # Anomaly detection logic  
-├── dags/             # Airflow DAG  
-├── data_quality/     # Data validation checks  
-├── infrastructure/   # Placeholder for infra (Terraform in future)  
-├── dashboards/       # Architecture diagram & outputs  
-```
-
-## How to run
-
-Start the Kafka producer:
-
-```bash
-python streaming/kafka_producer.py
-```
-
-Run the Spark streaming job:
-
-```bash
-spark-submit streaming/spark_streaming.py
+├── streaming/
+│   ├── kafka_producer.py
+│   ├── spark_streaming.py
+│   ├── stream_simulator.py      # Local streaming demo
+│   └── ml_simulator.py          # Local ML demo
+│
+├── ml/
+│   └── anomaly_detection.py     # Core ML logic
+│
+├── dags/
+│   └── airflow_pipeline.py
+│
+├── data_quality/
+│   └── validation.py
+│
+├── dashboards/
+│   ├── architecture.png
+│   ├── stream_output.png
+│   └── ml_output.png
 ```
 
 ## What I focused on
 
-* Keeping the pipeline simple but realistic
-* Structuring the project like a real system (not just scripts)
-* Combining streaming + ML in a practical way
-* Making it extensible for cloud deployment
+* Designing a real-time data pipeline architecture
+* Simulating streaming behavior locally
+* Integrating machine learning for anomaly detection
+* Structuring the project in a modular and scalable way
 
-## What can be improved
+## Future Improvements
 
-* Deploy the full pipeline on AWS (S3, Glue, Athena)
-* Add a dashboard for real-time monitoring
-* Introduce alerting (SNS / Slack)
-* Containerize the system using Docker
-* Improve the ML model with more features and tuning
+* Deploy pipeline on AWS (MSK, S3, Glue, Athena)
+* Add real-time dashboards (QuickSight / Power BI)
+* Implement alerting system (SNS / Slack)
+* Containerize using Docker
+* Extend ML model with more features
 
-## Final thoughts
+## Final Notes
 
-This project helped build a deeper understanding of how real-time data systems operate, especially the interaction between streaming pipelines and machine learning models. It serves as a strong foundation that can be extended into a production-grade system.
+This project demonstrates how streaming pipelines and machine learning can be combined in a real-world system. While the full cloud setup is represented in the architecture, the local simulators provide a practical way to run and validate the core logic.
